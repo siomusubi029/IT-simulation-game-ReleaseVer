@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>IT Simulation | Office Crisis</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="style.css?v=hide-2d-employees-20260814" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="orientation-warning" class="orientation-warning hidden">
+      <div class="orientation-warning-content">
+        <div class="orientation-icon">📱</div>
+        <p>横向きにしてください</p>
+        <p class="orientation-sub">このゲームは横向きでプレイしてください</p>
+      </div>
+    </div>
+    <section id="home-screen" class="home-screen">
+      <div class="home-copy">
+        <p class="eyebrow">REAL-TIME IT INCIDENT SIMULATION</p>
+        <h1>IT Simulation <span>— Office Crisis</span></h1>
+        <p class="home-lead">ITトラブルが次々に起きる現場で、状況を読み、正しい対応を選び、営業終了までシステムを守り切ってください。</p>
+
+        <div class="mode-selection-container">
+          <p class="section-label">担当するIT組織を選択してください</p>
+          <div class="mode-selector">
+            <button class="mode-card-button active" data-mode="office" type="button">
+              <span class="mode-icon">🏢</span>
+              <div class="mode-info">
+                <span class="mode-name">一般企業</span>
+                <span class="mode-desc">PC・Wi-Fi・アカウントなど社内ITの基礎を学ぶ</span>
+              </div>
+            </button>
+            <button class="mode-card-button" data-mode="security" type="button">
+              <span class="mode-icon">🛡️</span>
+              <div class="mode-info">
+                <span class="mode-name">セキュリティ運用会社</span>
+                <span class="mode-desc">ログ監視・攻撃対応・マルウェア対策を学ぶ</span>
+              </div>
+            </button>
+            <button class="mode-card-button" data-mode="infra" type="button">
+              <span class="mode-icon">🗄️</span>
+              <div class="mode-info">
+                <span class="mode-name">データセンター運用会社</span>
+                <span class="mode-desc">サーバー・ネットワーク・電源冷却を守る</span>
+              </div>
+            </button>
+            <button class="mode-card-button" data-mode="startup" type="button">
+              <span class="mode-icon">💻</span>
+              <div class="mode-info">
+                <span class="mode-name">Webサービス運営会社</span>
+                <span class="mode-desc">Web・クラウド・DB・開発運用を学ぶ</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div id="mobile-difficulty-selection" class="mobile-difficulty-selection hidden">
+          <h3>難易度を選択</h3>
+          <div class="mobile-difficulty-buttons">
+            <button class="mobile-difficulty-button active" data-difficulty="normal" type="button">ノーマル</button>
+            <button class="mobile-difficulty-button" data-difficulty="hard" type="button">ハード</button>
+            <button class="mobile-difficulty-button" data-difficulty="veryhard" type="button">ベリーハード</button>
+          </div>
+          <button id="mobile-start-game" class="primary-button">ゲーム開始</button>
+        </div>
+
+        <div class="home-actions">
+          <button id="home-start-button" class="primary-button home-start-button" type="button">ゲーム開始</button>
+          <div class="difficulty-control home-difficulty" aria-label="難易度">
+            <button class="difficulty-button active" data-difficulty="normal" type="button">ノーマル</button>
+            <button class="difficulty-button" data-difficulty="hard" type="button">ハード</button>
+            <button class="difficulty-button" data-difficulty="veryhard" type="button">ベリーハード</button>
+          </div>
+          <button id="sound-toggle-home" class="icon-button sound-toggle-button" type="button" aria-label="サウンドをオフにする">🔊</button>
+        </div>
+        <div class="home-secondary-actions">
+          <button id="achievements-open-button" class="secondary-button">🏆 実績</button>
+          <button id="leaderboard-open-button" class="secondary-button">📊 ランキング</button>
+        </div>
+        <div id="resume-choice" class="resume-choice hidden">
+          <p class="resume-copy">進行中のゲームがあります。続きからプレイするか、最初からやり直すかを選んでください。</p>
+          <div class="resume-actions">
+            <button id="resume-continue-button" class="primary-button" type="button">続きからプレイする</button>
+            <button id="resume-restart-button" class="secondary-button" type="button">最初からやり直す</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-panel">
+        <section class="home-summary">
+          <h2>今回のミッション</h2>
+          <div class="mission-grid">
+            <div><span>制限時間</span><strong>3分</strong></div>
+            <div><span>初期資金</span><strong>¥100,000</strong></div>
+            <div><span>設備</span><strong id="home-equipment-count">6種類</strong></div>
+            <div><span>トラブル</span><strong id="home-incident-count">70種類</strong></div>
+          </div>
+        </section>
+        <section class="home-rules">
+          <h2>遊び方</h2>
+          <ol>
+            <li>オフィス内に出る <b>!</b> をクリック</li>
+            <li>状況を読み、最適な対応を選ぶ</li>
+            <li>復旧費と設備投資のバランスを考える</li>
+          </ol>
+        </section>
+        <button id="incident-list-toggle" class="secondary-button incident-list-toggle">対応トラブル一覧を表示</button>
+      </div>
+
+      <div id="incident-sidebar" class="incident-sidebar hidden">
+        <div class="incident-sidebar-header">
+          <h2>対応トラブル一覧</h2>
+          <button id="incident-sidebar-close" class="icon-button" aria-label="閉じる">×</button>
+        </div>
+        <div class="incident-sidebar-filters">
+          <div class="filter-group">
+            <label for="mode-filter">企業</label>
+            <select id="mode-filter">
+              <option value="all">すべて</option>
+              <option value="office">一般企業</option>
+              <option value="security">セキュリティ運用会社</option>
+              <option value="infra">データセンター運用会社</option>
+              <option value="startup">Webサービス運営会社</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="equipment-filter">設備</label>
+            <select id="equipment-filter">
+              <option value="all">すべて</option>
+            </select>
+          </div>
+        </div>
+        <div id="incident-list" class="incident-list"></div>
+      </div>
+    </section>
+
+    <section id="game-screen" class="game-screen hidden">
+      <header class="topbar">
+        <div class="brand">
+          <p class="eyebrow">REAL-TIME IT INCIDENT SIMULATION</p>
+          <h1>IT Simulation <span>— Office Crisis</span></h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="difficulty-control" aria-label="難易度">
+            <button class="difficulty-button active" data-difficulty="normal" type="button">ノーマル</button>
+            <button class="difficulty-button" data-difficulty="hard" type="button">ハード</button>
+            <button class="difficulty-button" data-difficulty="veryhard" type="button">ベリーハード</button>
+          </div>
+          <div id="game-status" class="game-status standby">待機中</div>
+          <button id="sound-toggle-game" class="icon-button sound-toggle-button" type="button" aria-label="サウンドをオフにする">🔊</button>
+          <button id="home-button" class="secondary-button topbar-home-button" type="button">
+            <span class="home-button-label-full">ホームに戻る</span>
+            <span class="home-button-label-short">ホーム</span>
+          </button>
+          <button id="start-button" class="primary-button">リスタート</button>
+        </div>
+      </header>
+
+      <main class="game-layout">
+        <aside class="dashboard">
+          <section class="status-card time-card">
+            <p class="card-label">営業終了まで</p>
+            <strong id="timer" class="timer">03:00</strong>
+            <div class="timer-track"><div id="timer-bar" class="timer-bar"></div></div>
+          </section>
+
+          <section class="status-card">
+            <div class="metric-head">
+              <p class="card-label">資金</p>
+              <span class="metric-icon">¥</span>
+            </div>
+            <strong id="funds" class="metric-value">¥100,000</strong>
+            <p id="funds-detail" class="metric-note">運営は安定しています</p>
+          </section>
+
+          <section class="status-card">
+            <div class="metric-head">
+              <p class="card-label">信頼度</p>
+              <span class="metric-icon">◆</span>
+            </div>
+            <strong id="trust" class="metric-value">100</strong>
+            <div class="trust-track"><div id="trust-bar" class="trust-bar"></div></div>
+            <p id="trust-detail" class="metric-note">社内外から信頼されています</p>
+          </section>
+
+          <section class="status-card compact-card">
+            <p class="card-label">対応状況</p>
+            <div class="status-row">
+              <span>未対応トラブル</span><strong id="incident-count">0</strong>
+            </div>
+            <div class="status-row">
+              <span>故障設備</span><strong id="broken-count">0</strong>
+            </div>
+            <div class="status-row">
+              <span>解決件数</span><strong id="resolved-count">0</strong>
+            </div>
+            <div class="status-row">
+              <span>連続正解</span><strong id="streak-count">0</strong>
+            </div>
+            <div class="status-row hidden">
+              <span>次の発生</span><strong id="next-incident">--</strong>
+            </div>
+          </section>
+
+          <section class="status-card upgrade-card">
+            <div class="upgrade-head">
+              <div>
+                <p class="card-label">設備投資</p>
+                <strong id="upgrade-total" class="upgrade-total">Lv 0</strong>
+              </div>
+              <span class="metric-icon">Lv</span>
+            </div>
+            <p id="upgrade-detail" class="metric-note">営業中に資金を使って設備を強化できます。</p>
+            <div id="upgrade-list" class="upgrade-list"></div>
+          </section>
+
+          <section class="tips-card">
+            <p class="tips-title">遊び方</p>
+            <ol>
+              <li>オフィス内の <b>!</b> をクリック</li>
+              <li>状況を読み、最適な対応を選択</li>
+              <li>復旧費と設備投資のバランスを考える</li>
+            </ol>
+          </section>
+        </aside>
+
+        <section class="office-panel">
+          <div class="office-heading">
+            <div>
+              <p id="floor-eyebrow" class="eyebrow">NORMAL MODE / GENERAL OFFICE</p>
+              <h2 id="floor-title">第1営業フロア</h2>
+            </div>
+            <div class="office-legend">
+              <span><i class="legend-dot normal"></i>正常</span>
+              <span><i class="legend-dot incident"></i>トラブル</span>
+              <span><i class="legend-dot broken"></i>故障</span>
+            </div>
+          </div>
+
+          <div class="news-ticker" aria-live="polite">
+            <span class="news-label">IT NEWS</span>
+            <p id="news-ticker-text">営業開始後、IT運用ニュース速報が流れます。</p>
+          </div>
+
+          <div id="office-map" class="office-map" aria-label="一般企業のオフィス">
+            <div class="floor-grid"></div>
+            <div id="equipment-layer" class="equipment-layer"></div>
+            <div id="employee-layer" class="employee-layer"></div>
+            <div id="start-overlay" class="start-overlay hidden">
+              <div class="start-overlay-card">
+                <span class="start-icon">!</span>
+                <h3>営業開始前</h3>
+                <p>オフィスで起きるITトラブルを解決し、倒産を防いでください。</p>
+                <button id="overlay-start-button" class="primary-button">営業を開始する</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="event-log-panel">
+            <div class="event-log-head">
+              <h3>オペレーションログ</h3>
+              <button id="view-log-button" class="text-button">履歴を表示</button>
+            </div>
+            <ul id="event-log" class="event-log">
+              <li class="log-entry neutral"><span>--:--</span>ゲーム開始後、ここに対応履歴が表示されます。</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-topline">
+        <span id="modal-category" class="category-badge">INCIDENT</span>
+        <button id="modal-close" class="icon-button" aria-label="閉じる">×</button>
+      </div>
+      <h2 id="modal-title">トラブル発生</h2>
+      <p id="modal-location" class="modal-location"></p>
+      <p id="modal-description" class="modal-description"></p>
+      <div id="modal-effect" class="modal-effect"></div>
+      <div id="modal-options" class="modal-options"></div>
+      <div id="modal-feedback" class="modal-feedback hidden"></div>
+      <div id="modal-actions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <div id="log-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="log-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="log-modal-card">
+      <div class="modal-topline">
+        <span class="category-badge">LOG</span>
+        <button id="log-modal-close" class="icon-button" aria-label="閉じる">×</button>
+      </div>
+      <h2 id="log-modal-title">オペレーション履歴</h2>
+      <div id="log-modal-content" class="log-modal-content"></div>
+    </div>
+  </div>
+
+  <div id="result-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="result-title">
+    <div class="modal-backdrop result-backdrop"></div>
+    <div class="result-card">
+      <p id="result-eyebrow" class="eyebrow">RESULT</p>
+      <h2 id="result-title">営業終了</h2>
+      <p id="result-message" class="result-message"></p>
+      <div class="result-grid">
+        <div><span>資金</span><strong id="result-funds">¥0</strong></div>
+        <div><span>信頼度</span><strong id="result-trust">0</strong></div>
+        <div><span>解決件数</span><strong id="result-resolved">0</strong></div>
+        <div><span>誤対応</span><strong id="result-mistakes">0</strong></div>
+        <div><span>最大連続正解</span><strong id="result-streak">0</strong></div>
+        <div><span>投資Lv合計</span><strong id="result-upgrades">0</strong></div>
+      </div>
+      <div id="result-score-panel" class="result-score-panel hidden"></div>
+      <div id="result-learning" class="result-learning"></div>
+      <div id="review-list" class="review-list"></div>
+      <button id="restart-button" class="primary-button wide-button">ホーム画面へ戻る</button>
+    </div>
+  </div>
+
+<div id="difficulty-popover" class="popover hidden" role="tooltip" aria-hidden="true">
+    <div class="popover-content"></div>
+    <div class="popover-arrow" aria-hidden="true"></div>
+  </div>
+
+  <div id="achievement-toast-container" class="achievement-toast-container" aria-live="polite"></div>
+
+  <div id="achievements-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="achievements-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="log-modal-card">
+      <div class="modal-topline">
+        <span class="category-badge">ACHIEVEMENTS</span>
+        <button id="achievements-modal-close" class="icon-button" aria-label="閉じる">×</button>
+      </div>
+      <h2 id="achievements-modal-title">実績</h2>
+      <p id="achievements-progress" class="achievements-progress">0 / 0 解除済み</p>
+      <div id="achievements-grid" class="achievements-grid log-modal-content"></div>
+    </div>
+  </div>
+
+  <div id="leaderboard-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="leaderboard-modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="log-modal-card">
+      <div class="modal-topline">
+        <span class="category-badge">RANKING</span>
+        <button id="leaderboard-modal-close" class="icon-button" aria-label="閉じる">×</button>
+      </div>
+      <h2 id="leaderboard-modal-title">ランキング</h2>
+      <div class="incident-sidebar-filters leaderboard-filters">
+        <div class="filter-group">
+          <label for="leaderboard-mode-select">企業</label>
+          <select id="leaderboard-mode-select">
+            <option value="office">一般企業</option>
+            <option value="security">セキュリティ運用会社</option>
+            <option value="infra">データセンター運用会社</option>
+            <option value="startup">Webサービス運営会社</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="leaderboard-difficulty-select">難易度</label>
+          <select id="leaderboard-difficulty-select">
+            <option value="normal">ノーマル</option>
+            <option value="hard">ハード</option>
+            <option value="veryhard">ベリーハード</option>
+          </select>
+        </div>
+      </div>
+      <div id="leaderboard-content" class="log-modal-content"></div>
+    </div>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./assets/vendor/three/three.module.js?v=160-local"
+      }
+    }
+  </script>
+  <script src="script/config.js?v=game-duration-3min-20260821"></script>
+  <script src="script/incidents/office.js?v=expanded-incidents-20260807"></script>
+  <script src="script/incidents/security.js?v=expanded-incidents-20260807"></script>
+  <script src="script/incidents/infra.js?v=expanded-incidents-20260807"></script>
+  <script src="script/incidents/startup.js?v=expanded-incidents-20260807"></script>
+  <script src="script/modes/office.js"></script>
+  <script src="script/modes/security.js"></script>
+  <script src="script/modes/infra.js"></script>
+  <script src="script/modes/startup.js"></script>
+  <script src="script/modes/registry.js?v=company-types-20260807"></script>
+  <script src="script/equipment-3d.js?v=office-wifi-marker-20260821-1420"></script>
+  <script src="script/renderer.js?v=office-wifi-marker-20260821-1420"></script>
+  <script src="script/game-loop.js?v=revenue-every-5s-20260821"></script>
+  <script src="script/employees.js"></script>
+  <script src="script/modals.js?v=result-learning-20260807"></script>
+  <script src="script/game-over.js?v=result-learning-20260807"></script>
+  <script src="script/state.js?v=news-forecast-20260808"></script>
+  <script src="script/main.js?v=company-types-20260807"></script>
+  <script src="script/audio.js"></script>
+  <script src="script/achievements.js"></script>
+  <script src="script/leaderboard.js"></script>
+</body>
+</html>

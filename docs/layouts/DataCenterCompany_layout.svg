@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="950" viewBox="0 0 1600 950">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b2234"/>
+      <stop offset="1" stop-color="#071723"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#16364a"/>
+      <stop offset="1" stop-color="#0d2737"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".32"/>
+    </filter>
+    <style>
+      .title { font: 800 36px "Yu Gothic", Meiryo, sans-serif; fill: #eaf6ff; letter-spacing: 1px; }
+      .sub { font: 700 18px "Yu Gothic", Meiryo, sans-serif; fill: #8ee87a; letter-spacing: 2px; }
+      .room { font: 800 25px "Yu Gothic", Meiryo, sans-serif; fill: #eaf6ff; }
+      .small { font: 700 15px "Yu Gothic", Meiryo, sans-serif; fill: #9fc0cc; }
+      .equip { font: 800 17px "Yu Gothic", Meiryo, sans-serif; fill: #f1fbff; }
+      .root { font: 800 14px Consolas, monospace; fill: #bfe7ef; }
+      .tag { font: 900 12px "Yu Gothic", Meiryo, sans-serif; fill: #07121f; }
+      .outer { fill: #81919a; stroke: #d8eef2; stroke-width: 3; }
+      .room-fill { fill: url(#floor); stroke: #77b8c5; stroke-width: 3; }
+      .wall { fill: #81919a; stroke: #d8eef2; stroke-width: 3; }
+      .device { fill: #183447; stroke: #7eb7c8; stroke-width: 3; }
+      .rack { fill: #203f51; stroke: #8bc8d5; stroke-width: 3; }
+      .dark { fill: #071926; }
+      .green { fill: #8ee87a; }
+      .cyan { fill: #64eaf4; }
+      .yellow { fill: #ffd35a; }
+      .blue { fill: #88b7ff; }
+      .path { fill: none; stroke: #8ee87a; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 10 12; opacity: .72; }
+    </style>
+  </defs>
+  <rect width="1600" height="950" fill="url(#bg)"/>
+  <text x="90" y="70" class="sub">INFRA MODE / DATA CENTER</text>
+  <text x="90" y="116" class="title">データセンター運用会社 配置イメージ図</text>
+  <text x="90" y="148" class="small">サーバー室、ネットワーク室、電源室、冷却室に分けて、停止しないインフラ運用を表現。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="90" y="190" width="1420" height="650" rx="14" class="outer"/>
+    <rect x="130" y="230" width="1340" height="570" rx="8" class="room-fill"/>
+    <rect x="130" y="230" width="760" height="360" class="room-fill"/>
+    <rect x="890" y="230" width="580" height="360" class="room-fill"/>
+    <rect x="130" y="590" width="670" height="210" class="room-fill"/>
+    <rect x="800" y="590" width="670" height="210" class="room-fill"/>
+    <rect x="865" y="230" width="50" height="280" class="wall"/>
+    <rect x="130" y="565" width="575" height="50" class="wall"/>
+    <rect x="895" y="565" width="575" height="50" class="wall"/>
+    <rect x="705" y="565" width="190" height="50" fill="rgba(142,232,122,.15)" stroke="#8ee87a" stroke-width="3" stroke-dasharray="10 10"/>
+    <rect x="865" y="510" width="50" height="105" fill="rgba(142,232,122,.15)" stroke="#8ee87a" stroke-width="3" stroke-dasharray="10 10"/>
+
+    <text x="510" y="270" text-anchor="middle" class="room">サーバー室</text>
+    <text x="1180" y="270" text-anchor="middle" class="room">ネットワーク室</text>
+    <text x="465" y="630" text-anchor="middle" class="room">電源室</text>
+    <text x="1135" y="630" text-anchor="middle" class="room">冷却室</text>
+
+    <g transform="translate(205 330)"><rect width="92" height="155" rx="8" class="rack"/><rect x="18" y="24" width="56" height="14" rx="3" class="dark"/><rect x="18" y="54" width="56" height="14" rx="3" class="dark"/><circle cx="68" cy="120" r="5" class="green"/><text x="46" y="198" text-anchor="middle" class="equip">Webサーバー</text><text x="46" y="220" text-anchor="middle" class="root">Web_Root</text></g>
+    <g transform="translate(335 330)"><rect width="92" height="155" rx="8" class="rack"/><rect x="18" y="24" width="56" height="14" rx="3" class="dark"/><rect x="18" y="54" width="56" height="14" rx="3" class="dark"/><circle cx="68" cy="120" r="5" class="cyan"/><text x="46" y="198" text-anchor="middle" class="equip">DBサーバー</text><text x="46" y="220" text-anchor="middle" class="root">DB_Root</text></g>
+    <g transform="translate(465 330)"><rect width="92" height="155" rx="8" class="rack"/><rect x="20" y="26" width="52" height="16" rx="3" class="dark"/><circle cx="30" cy="116" r="5" class="blue"/><text x="46" y="198" text-anchor="middle" class="equip">DNSサーバー</text><text x="46" y="220" text-anchor="middle" class="root">DNS_Root</text></g>
+    <g transform="translate(605 330)"><rect width="92" height="155" rx="8" class="rack"/><rect x="16" y="20" width="60" height="14" rx="3" class="dark"/><rect x="16" y="48" width="60" height="14" rx="3" class="dark"/><circle cx="66" cy="116" r="5" class="yellow"/><text x="46" y="198" text-anchor="middle" class="equip">ストレージ装置</text><text x="46" y="220" text-anchor="middle" class="root">Storage_Root</text></g>
+    <g transform="translate(735 350)"><rect width="110" height="80" rx="8" class="device"/><rect x="20" y="18" width="70" height="12" rx="3" class="dark"/><circle cx="78" cy="55" r="5" class="green"/><text x="55" y="128" text-anchor="middle" class="equip">バックアップ</text><text x="55" y="150" text-anchor="middle" class="root">DCBackupServer_Root</text></g>
+
+    <g transform="translate(970 340)"><rect width="160" height="76" rx="8" class="device"/><circle cx="45" cy="38" r="15" fill="none" stroke="#64eaf4" stroke-width="6"/><path d="M45 38 H115" stroke="#64eaf4" stroke-width="5"/><text x="80" y="122" text-anchor="middle" class="equip">ルーター</text><text x="80" y="144" text-anchor="middle" class="root">Router_Root</text></g>
+    <g transform="translate(1200 340)"><rect width="170" height="76" rx="8" class="device"/><rect x="22" y="22" width="126" height="16" rx="4" class="dark"/><circle cx="36" cy="55" r="5" class="green"/><circle cx="58" cy="55" r="5" class="green"/><text x="85" y="122" text-anchor="middle" class="equip">スイッチ</text><text x="85" y="144" text-anchor="middle" class="root">Switch_Root</text></g>
+    <g transform="translate(1020 470)"><rect width="150" height="62" rx="8" class="device"/><path d="M28 34 H122" stroke="#ffd35a" stroke-width="6"/><text x="75" y="104" text-anchor="middle" class="equip">ロードバランサー</text><text x="75" y="126" text-anchor="middle" class="root">LoadBalancer_Root</text></g>
+    <g transform="translate(1260 470)"><rect width="130" height="62" rx="8" class="device"/><circle cx="40" cy="31" r="10" class="cyan"/><circle cx="70" cy="31" r="10" class="cyan"/><text x="65" y="104" text-anchor="middle" class="equip">監視サーバー</text><text x="65" y="126" text-anchor="middle" class="root">DCMonitorServer_Root</text></g>
+
+    <g transform="translate(240 680)"><rect width="170" height="76" rx="8" class="device"/><path d="M85 16 L56 54 H82 L68 78 L116 38 H88 Z" fill="#ffd35a"/><text x="85" y="116" text-anchor="middle" class="equip">UPS / 電源設備</text><text x="85" y="138" text-anchor="middle" class="root">UPS_Root</text></g>
+    <g transform="translate(515 675)"><rect width="165" height="86" rx="8" class="device"/><rect x="32" y="18" width="101" height="50" rx="6" class="dark"/><line x1="48" y1="44" x2="118" y2="44" stroke="#8ee87a" stroke-width="5"/><text x="82" y="121" text-anchor="middle" class="equip">仮想化基盤</text><text x="82" y="143" text-anchor="middle" class="root">VirtPlatform_Root</text></g>
+    <g transform="translate(980 675)"><rect width="190" height="84" rx="8" class="device"/><circle cx="50" cy="42" r="25" fill="none" stroke="#64eaf4" stroke-width="7"/><circle cx="120" cy="42" r="25" fill="none" stroke="#64eaf4" stroke-width="7"/><text x="95" y="121" text-anchor="middle" class="equip">冷却システム</text><text x="95" y="143" text-anchor="middle" class="root">CoolingSystem_Root</text></g>
+
+    <path class="path" d="M745 520 C810 545 830 545 895 520"/>
+  </g>
+
+  <rect x="90" y="865" width="1420" height="54" rx="10" fill="#0a1d2c" stroke="#2b5a70"/>
+  <text x="120" y="898" class="small">Normal: Web / DB / DNS / Router / Switch / Storage　Hard: LoadBalancer / Backup / Monitor　Very Hard: VirtPlatform / UPS / Cooling</text>
+</svg>

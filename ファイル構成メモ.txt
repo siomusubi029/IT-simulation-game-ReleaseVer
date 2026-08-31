@@ -1,0 +1,40 @@
+office-crisis-readable の主なフォルダ
+
+[ゲーム本体]
+index.html
+style.css
+start-game.bat
+script/
+assets/
+GeneralCompany.glb
+
+上のファイルはゲーム起動に使います。
+基本的にこの場所から動かさないでください。
+
+[Blender元データ]
+blender/sources/
+
+GeneralCompany_colored.blend や PC.blend など、Blenderで編集する元ファイルを置く場所です。
+
+[Blenderバックアップ]
+blender/backups/
+
+Blenderが作った .blend1 などのバックアップ置き場です。
+
+[配置図・資料]
+docs/layouts/
+
+企業ごとの配置図SVGなどを置く場所です。
+
+[出力物]
+output/pdf/
+output/images/
+
+作成したPDFや画像を置く場所です。
+
+[作業スクリプト]
+tools/blender/general-company/
+tools/blender/security-company/
+
+Blenderモデルの色付け、GLB書き出し、自動生成に使うPythonスクリプト置き場です。
+ゲームを遊ぶだけなら触らなくて大丈夫です。
