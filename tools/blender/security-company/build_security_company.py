@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 SOURCE_BLEND = ROOT / "blender" / "sources" / "PC.blend"
-EXPORT_GLB = ROOT / "SecurityCompany.glb"
+EXPORT_GLB = ROOT / "game" / "models" / "SecurityCompany.glb"
 EXPORT_BLEND = ROOT / "blender" / "sources" / "SecurityCompany.blend"
 
 
@@ -167,6 +167,7 @@ create_shell()
 load_security_assets()
 place_assets()
 color_assets()
+EXPORT_GLB.parent.mkdir(parents=True, exist_ok=True)
 
 bpy.ops.export_scene.gltf(
     filepath=str(EXPORT_GLB),

@@ -33,7 +33,7 @@ const gameModes = [
     logLabel: "オフィス",
     equipment: officeEquipment,
     rooms: officeRooms,
-    incidents: filteredOfficeIncidents
+    incidents: balanceIncidentsByEquipment(filteredOfficeIncidents, officeEquipment, "office")
   },
   {
     id: "security",
@@ -47,7 +47,7 @@ const gameModes = [
     logLabel: "SOCセンター",
     equipment: securityEquipment,
     rooms: securityRooms,
-    incidents: securityIncidents
+    incidents: balanceIncidentsByEquipment(securityIncidents, securityEquipment, "security")
   },
   {
     id: "infra",
@@ -61,7 +61,7 @@ const gameModes = [
     logLabel: "データセンター",
     equipment: infraEquipment,
     rooms: infraRooms,
-    incidents: infraIncidents
+    incidents: balanceIncidentsByEquipment(infraIncidents, infraEquipment, "infra")
   },
   {
     id: "startup",
@@ -75,7 +75,7 @@ const gameModes = [
     logLabel: "Webサービス",
     equipment: startupEquipment,
     rooms: startupRooms,
-    incidents: startupIncidents
+    incidents: balanceIncidentsByEquipment(startupIncidents, startupEquipment, "startup")
   }
 ];
 
@@ -86,12 +86,9 @@ function getCurrentMode() {
 
 function getDifficultyEquipmentCount(baseEquipment) {
   const configuredCount = getDifficulty().equipmentCount;
-  if (Number.isFinite(configuredCount)) {
-    return Math.min(baseEquipment.length, configuredCount);
-  }
-
-  const multiplier = getDifficulty().equipmentMultiplier || 1;
-  return Math.min(baseEquipment.length, Math.floor(baseEquipment.length * multiplier));
+  return Number.isFinite(configuredCount)
+    ? Math.min(baseEquipment.length, configuredCount)
+    : baseEquipment.length;
 }
 
 /** 現在のモードの部屋配列を、設備数に応じて動的にサイズ調整して返す */
@@ -125,8 +122,6 @@ function getAdjustedRooms() {
   
   // 外縁マージン（フロア端からの余白）と部屋間の隙間を確保
   const outerMargin = 3;   // フロア端からの余白（%）
-  const roomGap   = 10;    // 部屋間の隙間（%）
-  
   // 各部屋の幅と高さを個別に決定
   const sizes = rooms.map(r => {
     const count = countByRoom[r.id] || 0;
@@ -134,12 +129,10 @@ function getAdjustedRooms() {
     return { w: size, h: size };
   });
   
-  // 中央の隙間が roomGap になるよう右列・下行の基準位置を計算
   // 左列：outerMargin から開始
   // 右列：100 - outerMargin - size から開始
   // 上行：outerMargin から開始
   // 下行：100 - outerMargin - size から開始
-  // ただし左列幅 + roomGap + 右列幅 <= 100 - 2*outerMargin になるよう調整
   const leftX  = outerMargin;
   const rightX = (pct) => 100 - outerMargin - pct;
   const topY   = outerMargin;
@@ -210,20 +203,6 @@ function getActiveEquipment() {
   // 動的にサイズ調整された部屋定義を取得
   const adjustedRooms = getAdjustedRooms();
   
-  // シード付き乱数ジェネレーター
-  let seed = cacheKey.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const seededRandom = () => {
-    seed = (seed * 9301 + 49297) % 233280;
-    return seed / 233280;
-  };
-
-  const getRandomPos = (x1, x2, y1, y2) => {
-    return {
-      x: x1 + seededRandom() * (x2 - x1),
-      y: y1 + seededRandom() * (y2 - y1)
-    };
-  };
-
   Object.keys(equipmentByRoom).forEach(roomId => {
     const eqs = equipmentByRoom[roomId];
     if (eqs.length === 0) return;
@@ -247,13 +226,6 @@ function getActiveEquipment() {
     const absMinY = roomY + (marginRelYTop * roomHeight / 100);
     const absMaxY = roomY + ((100 - marginRelYBot) * roomHeight / 100);
     
-    // 同じ設備ごとにグループ化
-    const groups = {};
-    eqs.forEach(eq => {
-      if (!groups[eq.baseId]) groups[eq.baseId] = [];
-      groups[eq.baseId].push(eq);
-    });
-
     // ジッタード・グリッドで自然な配置を実現
     // グリッドの各セル内でランダムにオフセットを加え、きっちり並びすぎない見た目にする
     const placedItems = [];
@@ -358,5 +330,6 @@ function getActiveEquipment() {
 
 /** 現在のモードのインシデントカタログを返す */
 function getActiveIncidents() {
-  return getCurrentMode().incidents;
+  const activeEquipmentIds = new Set(getActiveEquipment().map((equipment) => equipment.id));
+  return getCurrentMode().incidents.filter((incident) => activeEquipmentIds.has(incident.equipmentId));
 }

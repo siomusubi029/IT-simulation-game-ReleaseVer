@@ -38,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
   els.logModalClose.addEventListener("click", hideLogModal);
   els.incidentListToggle.addEventListener("click", toggleIncidentSidebar);
   els.incidentSidebarClose.addEventListener("click", toggleIncidentSidebar);
-  els.modeFilter.addEventListener("change", renderIncidentList);
+  els.modeFilter.addEventListener("change", () => {
+    updateEquipmentFilterOptions();
+    renderIncidentList();
+  });
   els.equipmentFilter.addEventListener("change", renderIncidentList);
   
   // Toggle event log panel on mobile

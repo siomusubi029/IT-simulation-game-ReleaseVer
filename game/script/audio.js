@@ -109,9 +109,6 @@ const sfx = {
       [659.25, 0.14, "sine", 0.14, 0.16]
     ]);
   },
-  warning() {
-    playTone(392, 0.14, "square", 0.09);
-  },
   achievement() {
     playSequence([
       [659.25, 0.09, "sine", 0.15, 0],

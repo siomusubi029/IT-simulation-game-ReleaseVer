@@ -575,6 +575,7 @@ h1 span { color: var(--muted); font-size: 0.76em; font-weight: 500; }
 
 .filter-group {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -587,6 +588,9 @@ h1 span { color: var(--muted); font-size: 0.76em; font-weight: 500; }
 }
 
 .filter-group select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 8px 10px;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid var(--line);
@@ -868,8 +872,7 @@ h1 span { color: var(--muted); font-size: 0.76em; font-weight: 500; }
     linear-gradient(135deg, #12334a, #0a2638);
 }
 .office-map.has-company-scene::before,
-.office-map.has-company-scene .floor-grid,
-.office-map.has-company-scene .employee-layer {
+.office-map.has-company-scene .floor-grid {
   display: none;
 }
 .company-scene-canvas {
@@ -1552,6 +1555,16 @@ h1 span { color: var(--muted); font-size: 0.76em; font-weight: 500; }
 
 /* 実績パネル */
 .achievements-progress { margin: 4px 0 0; color: var(--muted); font-size: .82rem; font-weight: 700; }
+.achievements-actions { display: flex; justify-content: flex-end; margin: 10px 0 12px; }
+.danger-button {
+  border-color: rgba(255, 107, 122, .45);
+  color: #ffd7dc;
+  background: rgba(255, 107, 122, .08);
+}
+.danger-button:hover {
+  border-color: var(--red);
+  background: rgba(255, 107, 122, .14);
+}
 .achievements-grid { display: grid; gap: 10px; }
 .achievement-badge {
   display: flex;
@@ -1626,95 +1639,6 @@ h1 span { color: var(--muted); font-size: 0.76em; font-weight: 500; }
 
 #result-modal.win .result-card { box-shadow: 0 28px 70px rgba(142,232,122,.18), 0 0 0 1px rgba(142,232,122,.25); }
 #result-modal.lose .result-card { box-shadow: 0 28px 70px rgba(255,94,108,.18), 0 0 0 1px rgba(255,94,108,.25); }
-
-/* 従業員アニメーション */
-.employee-layer {
-  position: absolute;
-  inset: clamp(8px, 1.2vh, 16px);
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.employee {
-  position: absolute;
-  width: clamp(20px, 2.5vw, 28px);
-  height: clamp(20px, 2.5vw, 28px);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  z-index: 3;
-  will-change: transform, left, top;
-}
-
-.employee-body {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.employee-head {
-  position: absolute;
-  width: 40%;
-  height: 35%;
-  background: #ffd35a;
-  border-radius: 50%;
-  top: 0;
-  left: 30%;
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.employee-torso {
-  position: absolute;
-  width: 50%;
-  height: 45%;
-  background: #42d7ef;
-  border-radius: 20% 20% 10% 10%;
-  top: 32%;
-  left: 25%;
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.employee-legs {
-  position: absolute;
-  width: 50%;
-  height: 25%;
-  top: 72%;
-  left: 25%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.employee-leg {
-  width: 35%;
-  height: 100%;
-  background: #2a5a6a;
-  border-radius: 0 0 30% 30%;
-}
-
-.employee.walking .employee-leg {
-  animation: walk 0.4s ease-in-out infinite alternate;
-}
-
-.employee.walking .employee-leg:first-child {
-  animation-delay: 0s;
-}
-
-.employee.walking .employee-leg:last-child {
-  animation-delay: 0.2s;
-}
-
-@keyframes walk {
-  0% { transform: rotate(-15deg); }
-  100% { transform: rotate(15deg); }
-}
-
-.employee.working .employee-torso {
-  animation: work-pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes work-pulse {
-  0%, 100% { transform: scaleY(1); }
-  50% { transform: scaleY(1.05); }
-}
 
 /* Responsive design for mobile (landscape) */
 @media (max-width: 768px) {

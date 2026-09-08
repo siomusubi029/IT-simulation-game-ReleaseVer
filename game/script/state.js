@@ -18,6 +18,7 @@ const state = {
   currentNewsIndex: -1,
   newsForecast: null,
   incidents: [],
+  recentIncidentIds: [],
   equipmentStatus: {},
   equipmentUpgrades: {},
   upgradeSpend: 0,

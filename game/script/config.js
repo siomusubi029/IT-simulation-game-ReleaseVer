@@ -51,7 +51,6 @@ const difficultyConfig = {
     pressureMultiplier: 1,
     rewardMultiplier: 1,
     revenueMultiplier: 1,
-    employeeIncidentChance: 0.12,
     rampDelay: 25,
     pressureCap: 6
   },
@@ -66,7 +65,6 @@ const difficultyConfig = {
     pressureMultiplier: 1.2,
     rewardMultiplier: 1.35,
     revenueMultiplier: 1.15,
-    employeeIncidentChance: 0.15,
     rampDelay: 20,
     pressureCap: 7
   },
@@ -81,7 +79,6 @@ const difficultyConfig = {
     pressureMultiplier: 1.35,
     rewardMultiplier: 1.75,
     revenueMultiplier: 1.3,
-    employeeIncidentChance: 0.18,
     rampDelay: 15,
     pressureCap: 8
   }

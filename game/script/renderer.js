@@ -91,15 +91,20 @@ function toggleIncidentSidebar() {
 
 function updateEquipmentFilterOptions() {
   if (!els.equipmentFilter) return;
-  const equipment = getActiveEquipment();
+  const modeFilter = els.modeFilter ? els.modeFilter.value : "all";
+  const modes = modeFilter === "all"
+    ? gameModes
+    : gameModes.filter((mode) => mode.id === modeFilter);
   const currentValue = els.equipmentFilter.value;
   
   els.equipmentFilter.innerHTML = '<option value="all">すべて</option>';
-  equipment.forEach(eq => {
-    const option = document.createElement("option");
-    option.value = eq.id;
-    option.textContent = eq.name;
-    els.equipmentFilter.appendChild(option);
+  modes.forEach((mode) => {
+    mode.equipment.forEach((eq) => {
+      const option = document.createElement("option");
+      option.value = modeFilter === "all" ? `${mode.id}:${eq.id}` : eq.id;
+      option.textContent = modeFilter === "all" ? `${mode.name} / ${eq.name}` : eq.name;
+      els.equipmentFilter.appendChild(option);
+    });
   });
   
   // 値を保持
@@ -131,17 +136,25 @@ function renderIncidentList() {
   
   // 設備フィルター
   if (equipmentFilter !== "all") {
-    filteredIncidents = filteredIncidents.filter(incident => incident.equipmentId === equipmentFilter);
+    const separatorIndex = equipmentFilter.indexOf(":");
+    const filterModeId = separatorIndex >= 0 ? equipmentFilter.slice(0, separatorIndex) : modeFilter;
+    const filterEquipmentId = separatorIndex >= 0 ? equipmentFilter.slice(separatorIndex + 1) : equipmentFilter;
+    filteredIncidents = filteredIncidents.filter((incident) =>
+      incident.equipmentId === filterEquipmentId
+      && (filterModeId === "all" || incident.modeId === filterModeId)
+    );
   }
   
   // 設備ごとにグループ化
   const incidentsByEquipment = {};
   filteredIncidents.forEach(incident => {
-    const equipmentId = incident.equipmentId;
-    if (!incidentsByEquipment[equipmentId]) {
-      incidentsByEquipment[equipmentId] = [];
+    const groupKey = modeFilter === "all"
+      ? `${incident.modeId}:${incident.equipmentId}`
+      : incident.equipmentId;
+    if (!incidentsByEquipment[groupKey]) {
+      incidentsByEquipment[groupKey] = [];
     }
-    incidentsByEquipment[equipmentId].push(incident);
+    incidentsByEquipment[groupKey].push(incident);
   });
   
   // 設備名を取得（全モードの設備）
@@ -149,6 +162,7 @@ function renderIncidentList() {
   gameModes.forEach(mode => {
     mode.equipment.forEach(eq => {
       equipmentMap[eq.id] = eq.name;
+      equipmentMap[`${mode.id}:${eq.id}`] = `${mode.name} / ${eq.name}`;
     });
   });
   

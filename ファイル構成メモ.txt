@@ -1,20 +1,27 @@
 office-crisis-readable の主なフォルダ
 
 [ゲーム本体]
-index.html
-style.css
-start-game.bat
-script/
-assets/
-GeneralCompany.glb
+game/index.html
+game/style.css
+game/script/
+game/assets/
+game/models/
 
-上のファイルはゲーム起動に使います。
-基本的にこの場所から動かさないでください。
+ゲームは game/index.html から動きます。
+3Dモデルは game/models/ にまとめています。
+
+[紹介サイト]
+site/about.html
+site/about.css
+site/about.js
+
+紹介サイトは site/about.html から動きます。
+ゲームへのリンクは ../game/index.html を参照します。
 
 [Blender元データ]
 blender/sources/
 
-GeneralCompany_colored.blend や PC.blend など、Blenderで編集する元ファイルを置く場所です。
+PC.blend や GeneralCompany_colored.blend など、Blenderで編集する元ファイルを置く場所です。
 
 [Blenderバックアップ]
 blender/backups/
@@ -33,8 +40,12 @@ output/images/
 作成したPDFや画像を置く場所です。
 
 [作業スクリプト]
-tools/blender/general-company/
-tools/blender/security-company/
+tools/blender/
 
 Blenderモデルの色付け、GLB書き出し、自動生成に使うPythonスクリプト置き場です。
-ゲームを遊ぶだけなら触らなくて大丈夫です。
+GLBを書き出す場合は game/models/ に出力されるようにしています。
+
+[起動]
+start-game.bat
+
+ローカルサーバーを起動し、http://127.0.0.1:8094/game/index.html を開きます。

@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 BLEND_PATH = ROOT / "blender" / "sources" / "GeneralCompany_colored.blend"
-EXPORT_GLB = ROOT / "GeneralCompany.glb"
+EXPORT_GLB = ROOT / "game" / "models" / "GeneralCompany.glb"
 
 
 def principled_node(mat):
@@ -23,6 +23,7 @@ def set_input(node, name, value):
 def material(name, color, roughness=0.68, metallic=0.0, emission=None, strength=0.0):
     mat = bpy.data.materials.get(name) or bpy.data.materials.new(name)
     mat.use_nodes = True
+    mat.use_backface_culling = True
     node = principled_node(mat)
     if node:
         set_input(node, "Base Color", color)
@@ -44,6 +45,7 @@ MATS = {
     "device": material("Game_IT_Device_Deep_Slate", (0.05, 0.12, 0.17, 1), 0.62, 0.05),
     "panel": material("Game_IT_Device_Teal_Panel", (0.13, 0.27, 0.32, 1), 0.66, 0.03),
     "light_device": material("Game_IT_Light_Device_Grey", (0.42, 0.52, 0.52, 1), 0.78),
+    "monitor_frame": material("Game_IT_Monitor_Frame_Charcoal", (0.015, 0.022, 0.028, 1), 0.58, 0.02),
     "screen": material("Game_IT_Screen_Black", (0.01, 0.015, 0.025, 1), 0.48),
     "cyan": material("Game_IT_Cyan_Glow", (0.04, 0.48, 0.62, 1), 0.4, 0.0, (0.04, 0.75, 0.95, 1), 0.8),
     "green": material("Game_IT_LED_Green", (0.18, 0.86, 0.36, 1), 0.36, 0.0, (0.18, 1.0, 0.36, 1), 0.9),
@@ -65,9 +67,28 @@ def pick_by_name(obj_name, mat_name=""):
         return MATS["wood"]
     if "chair" in text:
         return MATS["chair"]
-    if "screen_on" in text or "screen_glow" in text or "monglow" in text or "holo" in text:
+    if (
+        "screen_on" in text
+        or "screen_glow" in text
+        or "monitor_glow" in text
+        or "mon_glow" in text
+        or "monitorglow" in text
+        or "monglow" in text
+        or "controlscreen" in text
+        or "holo" in text
+    ):
         return MATS["cyan"]
-    if "screen_black" in text or "screen" in text or "monitor" in text or "moncasing" in text:
+    if "monitor_base" in text or "monbase" in text or "monitor_neck" in text or "monneck" in text:
+        return MATS["metal"]
+    if (
+        "monitor_bezel" in text
+        or "monitor_casing" in text
+        or "moncasing" in text
+        or "screen_casing" in text
+        or "screencasing" in text
+    ):
+        return MATS["monitor_frame"]
+    if "monitor_screen" in text or "screen_black" in text:
         return MATS["screen"]
     if "led_green" in text:
         return MATS["green"]
@@ -107,10 +128,11 @@ for obj in bpy.data.objects:
                 changed += 1
     else:
         chosen = pick_by_name(obj.name)
-        if chosen:
-            obj.data.materials.append(chosen)
-            changed += 1
+            if chosen:
+                obj.data.materials.append(chosen)
+                changed += 1
 
+EXPORT_GLB.parent.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.save_as_mainfile(filepath=str(BLEND_PATH))
 bpy.ops.export_scene.gltf(
     filepath=str(EXPORT_GLB),

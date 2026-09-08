@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>IT Simulation | Office Crisis</title>
   <link rel="icon" href="data:," />
-  <link rel="stylesheet" href="style.css?v=hide-2d-employees-20260814" />
+  <link rel="stylesheet" href="style.css?v=filter-width-20260904" />
 </head>
 <body>
   <div class="app-shell">
@@ -247,7 +247,6 @@
           <div id="office-map" class="office-map" aria-label="一般企業のオフィス">
             <div class="floor-grid"></div>
             <div id="equipment-layer" class="equipment-layer"></div>
-            <div id="employee-layer" class="employee-layer"></div>
             <div id="start-overlay" class="start-overlay hidden">
               <div class="start-overlay-card">
                 <span class="start-icon">!</span>
@@ -338,6 +337,9 @@
       </div>
       <h2 id="achievements-modal-title">実績</h2>
       <p id="achievements-progress" class="achievements-progress">0 / 0 解除済み</p>
+      <div class="achievements-actions">
+        <button id="achievements-reset-button" class="secondary-button danger-button" type="button">実績をリセット</button>
+      </div>
       <div id="achievements-grid" class="achievements-grid log-modal-content"></div>
     </div>
   </div>
@@ -385,21 +387,21 @@
   <script src="script/incidents/security.js?v=expanded-incidents-20260807"></script>
   <script src="script/incidents/infra.js?v=expanded-incidents-20260807"></script>
   <script src="script/incidents/startup.js?v=expanded-incidents-20260807"></script>
+  <script src="script/incidents/balancer.js?v=ten-per-equipment-20260903"></script>
   <script src="script/modes/office.js"></script>
   <script src="script/modes/security.js"></script>
   <script src="script/modes/infra.js"></script>
   <script src="script/modes/startup.js"></script>
-  <script src="script/modes/registry.js?v=company-types-20260807"></script>
-  <script src="script/equipment-3d.js?v=office-wifi-marker-20260821-1420"></script>
-  <script src="script/renderer.js?v=office-wifi-marker-20260821-1420"></script>
-  <script src="script/game-loop.js?v=revenue-every-5s-20260821"></script>
-  <script src="script/employees.js"></script>
+  <script src="script/modes/registry.js?v=ten-per-equipment-20260903"></script>
+  <script src="script/equipment-3d.js?v=realistic-materials-centered-20260908"></script>
+  <script src="script/renderer.js?v=all-equipment-filter-20260904"></script>
+  <script src="script/game-loop.js?v=ten-per-equipment-20260903"></script>
   <script src="script/modals.js?v=result-learning-20260807"></script>
   <script src="script/game-over.js?v=result-learning-20260807"></script>
   <script src="script/state.js?v=news-forecast-20260808"></script>
-  <script src="script/main.js?v=company-types-20260807"></script>
+  <script src="script/main.js?v=all-equipment-filter-20260904"></script>
   <script src="script/audio.js"></script>
-  <script src="script/achievements.js"></script>
+  <script src="script/achievements.js?v=achievements-reset-20260903"></script>
   <script src="script/leaderboard.js"></script>
 </body>
 </html>

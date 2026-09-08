@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IT企業を経営し、設備投資・障害対応・経営判断を体験しながらITを学べるシミュレーションゲーム。">
+  <title>IT Simulation — Office Crisis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="about.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "../game/assets/vendor/three/three.module.js?v=160-local"
+      }
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">本文へ移動</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="IT Simulation トップへ">IT Simulation</a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span><span class="sr-only">メニュー</span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="メインナビゲーション">
+      <a href="#about">ゲームについて</a>
+      <a href="#features">特徴</a>
+      <a href="#learning">学べること</a>
+      <a href="#modes">企業モード</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="top" class="hero circuit-section">
+      <div class="hero__copy reveal">
+        <h1>IT企業を経営し、<br><span>トラブルを乗り越えろ。</span></h1>
+        <p>限られた時間と資金で設備を整え、突然発生するITトラブルに対応する経営シミュレーション。</p>
+        <div class="hero__actions">
+          <a class="button button--primary play-link" href="../game/index.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            ゲームをプレイ
+          </a>
+          <a class="button button--secondary" href="#how-to">遊び方を見る
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="device-note"><span aria-hidden="true">!</span> ゲームプレイはPCのみ対応</p>
+      </div>
+      <div class="hero__visual reveal">
+        <div class="screen-frame screen-frame--model">
+          <div class="about-model-viewer" data-model-src="../game/models/GeneralCompany.glb?v=organized-realistic-20260909" aria-label="一般企業オフィスの3Dプレビュー">
+            <img class="about-model-fallback" src="../game/assets/game-screen.png" alt="IT Simulationのゲームプレイ画面。3Dオフィスと設備投資メニューが表示されている。">
+            <!-- <p class="about-model-status">3Dプレビューを読み込み中</p> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="intro section-shell">
+      <p class="section-label">ABOUT</p>
+      <h2>経営判断が、ITの現場を動かす。</h2>
+      <p>プレイヤーはIT企業の経営者。設備を選び、トラブルに対応し、限られた時間で会社を成長させます。</p>
+    </section>
+
+    <section id="features" class="features circuit-section">
+      <div class="section-heading section-shell">
+        <p class="section-label">FEATURE</p>
+        <h2>ゲームで体験する、<span>IT経営のリアル。</span></h2>
+      </div>
+      <div class="feature-list section-shell">
+        <article class="feature feature--cyan reveal">
+          <div class="feature__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><rect x="8" y="8" width="48" height="14" rx="2"/><rect x="8" y="25" width="48" height="14" rx="2"/><rect x="8" y="42" width="48" height="14" rx="2"/><path d="M15 15h18M15 32h18M15 49h18"/><circle cx="48" cy="15" r="2"/><circle cx="48" cy="32" r="2"/><circle cx="48" cy="49" r="2"/></svg>
+          </div>
+          <div><h3>設備投資</h3><p>限られた資金で、会社に必要な設備を選んで強化。</p></div>
+          <div class="feature__art servers" aria-hidden="true"><i></i><i></i><i></i></div>
+        </article>
+        <article class="feature feature--yellow reveal">
+          <div class="feature__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M32 7 59 55H5z"/><path d="M32 22v17M32 47v1"/></svg>
+          </div>
+          <div><h3>障害対応</h3><p>突然発生する故障やトラブルを見極め、素早く復旧。</p></div>
+          <div class="feature__art monitor" aria-hidden="true"><span>!</span></div>
+        </article>
+        <article class="feature feature--green reveal">
+          <div class="feature__icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M8 53h48M13 47v-9h9v9M28 47V27h9v20M43 47V16h9v31M12 30l15-13 9 7 16-16"/><path d="m43 8 9 0 0 9"/></svg>
+          </div>
+          <div><h3>経営判断</h3><p>信頼度と資金のバランスを考え、会社を成長させる。</p></div>
+          <div class="feature__art bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="learning" class="learning section-shell">
+      <p class="section-label">LEARNING</p>
+      <h2>遊びながら、<span>ITがわかる。</span></h2>
+      <p>設備・ネットワーク・セキュリティの役割を、経営シミュレーションを通して学べます。</p>
+      <div class="learning-topics">
+        <div><span class="topic-icon">▤</span><strong>設備</strong><small>サーバー・PC・電源</small></div>
+        <div><span class="topic-icon">⌘</span><strong>ネットワーク</strong><small>通信・接続・安定運用</small></div>
+        <div><span class="topic-icon">◇</span><strong>セキュリティ</strong><small>検知・防御・復旧</small></div>
+      </div>
+    </section>
+
+    <section id="how-to" class="how-to circuit-section">
+      <div class="section-heading section-shell">
+        <p class="section-label">HOW TO PLAY</p>
+        <h2>選んで、備えて、乗り越える。</h2>
+      </div>
+      <ol class="steps section-shell">
+        <li><span>01</span><div><h3>企業と難易度を選ぶ</h3><p>挑戦する企業モードと難易度を決めます。</p></div></li>
+        <li><span>02</span><div><h3>必要な設備へ投資</h3><p>資金を考えながら設備を購入・強化します。</p></div></li>
+        <li><span>03</span><div><h3>トラブルに対応</h3><p>状況を見極め、時間内に会社を守ります。</p></div></li>
+      </ol>
+    </section>
+
+    <section id="modes" class="modes section-shell">
+      <p class="section-label">MODE</p>
+      <h2>4つの企業で、<span>異なるIT課題に挑戦。</span></h2>
+      <div class="mode-grid">
+        <article><span class="mode-number">01</span><h3>一般企業</h3><p>社内IT環境を整え、日々のトラブルに対応。</p></article>
+        <article><span class="mode-number">02</span><h3>セキュリティ企業</h3><p>攻撃を検知し、会社の情報を守る。</p></article>
+        <article><span class="mode-number">03</span><h3>インフラ会社</h3><p>通信とサーバーを安定して動かす。</p></article>
+        <article><span class="mode-number">04</span><h3>Web企業</h3><p>サービスを支える開発・運用環境を構築。</p></article>
+      </div>
+    </section>
+
+    <section class="final-cta circuit-section">
+      <div class="section-shell reveal">
+        <h2>IT企業の経営を、<span>今すぐ体験。</span></h2>
+        <p>選び、判断し、乗り越える。あなたの経営センスが試される。</p>
+        <div class="hero__actions hero__actions--center">
+          <a class="button button--primary play-link" href="../game/index.html">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            ゲームをプレイ
+          </a>
+          <a class="button button--secondary" href="#how-to">遊び方を見る
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="device-note device-note--center"><span aria-hidden="true">!</span> ゲームプレイはPCのみ対応しています。スマートフォンではゲーム紹介をご覧いただけます。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <strong>IT Simulation</strong><span>— Office Crisis</span>
+  </footer>
+
+  <div class="mobile-dialog" role="dialog" aria-modal="true" aria-labelledby="mobile-dialog-title" hidden>
+    <div class="mobile-dialog__panel">
+      <button class="dialog-close" type="button" aria-label="閉じる">×</button>
+      <span class="dialog-icon" aria-hidden="true">PC</span>
+      <h2 id="mobile-dialog-title">ゲームプレイはPCで</h2>
+      <p>このゲームはPCブラウザ向けです。PCでこの紹介ページを開き、「ゲームをプレイ」を選んでください。</p>
+      <button class="button button--primary dialog-ok" type="button">紹介ページに戻る</button>
+    </div>
+  </div>
+
+  <script src="about.js?v=organized-paths-20260909"></script>
+</body>
+</html>

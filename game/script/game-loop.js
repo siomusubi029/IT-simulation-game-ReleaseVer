@@ -5,7 +5,6 @@ function enterGameScreen() {
   showGameScreen();
   els.startOverlay.classList.remove("hidden");
   els.startButton.textContent = "リスタート";
-  initEmployees();
   renderAll();
 }
 
@@ -56,6 +55,7 @@ function resetState() {
   state.currentNewsIndex = -1;
   state.newsForecast = null;
   state.incidents = [];
+  state.recentIncidentIds = [];
   state.review = [];
   state.learningTagCounts = {};
   state.minTrustSeen = STARTING_TRUST;
@@ -70,7 +70,6 @@ function resetState() {
   renderFloorLabel();
   els.startOverlay.classList.add("hidden");
   els.resultModal.classList.add("hidden");
-  clearEmployees();
 }
 
 function restartGame() {
@@ -165,16 +164,20 @@ function processIncidents() {
 }
 
 function spawnIncident(targetEquipmentId = null) {
-  const available = getActiveIncidents().filter((candidate) => {
+  const eligible = getActiveIncidents().filter((candidate) => {
     const noActive = !state.incidents.some((incident) => incident.equipmentId === candidate.equipmentId);
     const notBroken = state.equipmentStatus[candidate.equipmentId] !== "broken";
     const matchesTarget = !targetEquipmentId || candidate.equipmentId === targetEquipmentId;
     return noActive && notBroken && matchesTarget;
   });
 
+  const recentIds = new Set(state.recentIncidentIds || []);
+  const freshCandidates = eligible.filter((candidate) => !recentIds.has(candidate.id));
+  const available = freshCandidates.length > 0 ? freshCandidates : eligible;
   if (available.length === 0) return;
 
   const pick = pickIncidentByNewsForecast(available, targetEquipmentId);
+  state.recentIncidentIds = [...(state.recentIncidentIds || []), pick.id].slice(-3);
   const incident = {
     ...pick,
     instanceId: `${pick.id}-${Date.now()}-${Math.random()}`,

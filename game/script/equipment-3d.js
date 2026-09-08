@@ -5,10 +5,10 @@
   const GLTF_LOADER_URL = `${new URL("../assets/vendor/three/GLTFLoader.js", SCRIPT_BASE_URL).href}?v=160-local`;
 
   const MODEL_SOURCES = {
-    office: "GeneralCompany.glb?v=office-wifi-marker-20260821-1420",
-    security: "SecurityCompany.glb?v=security-floor-20260818",
-    infra: "DataCenterCompany.glb",
-    startup: "WebServiceCompany.glb"
+    office: "models/GeneralCompany.glb?v=organized-realistic-20260909",
+    security: "models/SecurityCompany.glb?v=organized-realistic-20260909",
+    infra: "models/DataCenterCompany.glb?v=organized-realistic-20260909",
+    startup: "models/WebServiceCompany.glb?v=organized-realistic-20260909"
   };
 
   const EQUIPMENT_MODEL_MAP = {
@@ -124,7 +124,7 @@
     }
   };
 
-  const PRESERVE_MODEL_LAYOUT_MODES = new Set(["office", "security"]);
+  const PRESERVE_MODEL_LAYOUT_MODES = new Set(["office", "security", "infra", "startup"]);
 
   const gltfCache = new Map();
   const activeEquipmentRenderers = new Set();
@@ -277,16 +277,6 @@
     fallback.textContent = icon || "□";
     container.appendChild(fallback);
   }
-  function cloneModelNodes(THREE, gltf, nodeNames) {
-    const group = new THREE.Group();
-    nodeNames.forEach((nodeName) => {
-      const source = gltf.scene.getObjectByName(nodeName);
-      if (!source) return;
-      group.add(source.clone(true));
-    });
-    return group.children.length ? group : null;
-  }
-
   function frameObject(THREE, object) {
     const box = new THREE.Box3().setFromObject(object);
     if (box.isEmpty()) return;
@@ -404,15 +394,16 @@
       const baseId = getBaseEquipmentId(item);
       const accent = new THREE.Color(accentByBaseId[baseId] || 0xdff7ff);
       roots.forEach((root) => {
-        root.scale.multiplyScalar(1);
         root.renderOrder = 5;
         root.traverse((child) => {
           if (!child.isMesh || !child.material) return;
           child.renderOrder = 5;
           const materials = Array.isArray(child.material) ? child.material : [child.material];
           materials.forEach((material) => {
-            if (material.color) material.color.lerp(accent, 0.08);
-            if (material.emissive) {
+            const materialName = material.name || "";
+            const isAccentMaterial = /glow|accent|led/i.test(materialName);
+            if (isAccentMaterial && material.color) material.color.lerp(accent, 0.08);
+            if (isAccentMaterial && material.emissive) {
               material.emissive.lerp(accent, 0.08);
               material.emissiveIntensity = Math.max(material.emissiveIntensity || 0, 0.08);
             }
@@ -517,9 +508,9 @@
   function getModeAccent(mode) {
     return {
       office: 0x64eaf4,
-      security: 0xff5e6c,
-      infra: 0x8ee87a,
-      startup: 0xb56aff
+      security: 0x64eaf4,
+      infra: 0x64eaf4,
+      startup: 0x64eaf4
     }[mode] || 0x64eaf4;
   }
 
@@ -820,47 +811,61 @@
 
       const scene = new THREE.Scene();
       scene.fog = new THREE.Fog(0x0c2534, 8.5, 15);
+      const useOfficeStyleScene = mode === "office" || mode === "security" || mode === "infra" || mode === "startup";
 
       const object = gltf.scene.clone(true);
       frameObject(THREE, object);
       enableObjectDepth(object);
-      object.scale.multiplyScalar(mode === "office" ? 2.9 : mode === "security" ? 1.9 : 1.5);
-      if (mode === "office") {
+      const officeSceneScale = mode === "security" ? 2.9 : 2.9;
+      object.scale.multiplyScalar(useOfficeStyleScene ? officeSceneScale : 1.5);
+      if (useOfficeStyleScene) {
         brightenOfficeModel(THREE, object);
         emphasizeOfficeEquipment(THREE, object, equipment);
       }
       if (!PRESERVE_MODEL_LAYOUT_MODES.has(mode)) {
         applyEquipmentLayout(THREE, object, equipment);
       }
-      object.rotation.set(mode === "office" ? 0 : -0.05, mode === "office" ? 0 : -0.66, 0);
-      if (mode === "office") {
-        object.position.x -= 0.16;
-        object.position.y += 0.26;
-        object.position.z -= 0.1;
-      } else if (mode === "security") {
-        object.position.x += 0.1;
-        object.position.z -= 1.25;
+      object.rotation.set(useOfficeStyleScene ? 0 : -0.05, useOfficeStyleScene ? 0 : -0.66, 0);
+      if (useOfficeStyleScene) {
+        object.position.x += mode === "security" ? -0.16 : -0.16;
+        object.position.y += mode === "security" ? 0.26 : 0.26;
+        object.position.z += mode === "security" ? -0.1 : -0.1;
+      }
+
+      const officeCameraTarget = new THREE.Vector3(0.08, 0.5, 0.02);
+      if (useOfficeStyleScene) {
+        const modelBox = new THREE.Box3().setFromObject(object);
+        if (!modelBox.isEmpty()) {
+          const modelCenter = new THREE.Vector3();
+          modelBox.getCenter(modelCenter);
+          object.position.x += officeCameraTarget.x - modelCenter.x;
+          object.position.z += officeCameraTarget.z - modelCenter.z;
+        }
       }
       scene.add(object);
 
       const accent = getModeAccent(mode);
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x5f8fa0, mode === "office" ? 1.25 : 2.25));
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x5f8fa0, useOfficeStyleScene ? 1.25 : 2.25));
 
-      const sun = new THREE.DirectionalLight(0xe6fbff, mode === "office" ? 1.72 : 3.05);
+      const sun = new THREE.DirectionalLight(0xe6fbff, useOfficeStyleScene ? 1.72 : 3.05);
       sun.position.set(-3.8, 6.8, 4.4);
       sun.castShadow = true;
       scene.add(sun);
 
-      const rim = new THREE.DirectionalLight(accent, mode === "office" ? 0.78 : 1.55);
+      const rim = new THREE.DirectionalLight(accent, useOfficeStyleScene ? 0.78 : 1.55);
       rim.position.set(4.8, 2.6, -3.5);
       scene.add(rim);
 
       const width = Math.max(320, container.clientWidth || 960);
       const height = Math.max(220, container.clientHeight || 540);
       const camera = new THREE.PerspectiveCamera(30, width / height, 0.1, 100);
-      if (mode === "office") {
-        camera.position.set(0.08, 6.18, 6.0);
-        camera.lookAt(0.08, 0.5, 0.02);
+      if (useOfficeStyleScene) {
+        camera.position.set(
+          officeCameraTarget.x,
+          officeCameraTarget.y + 5.68,
+          officeCameraTarget.z + 5.98
+        );
+        camera.lookAt(officeCameraTarget);
       } else {
         camera.position.set(3.05, 3.2, 4.25);
         camera.lookAt(0, 0.64, 0);
@@ -869,7 +874,7 @@
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = mode === "office" ? 0.86 : 1.18;
+      renderer.toneMappingExposure = useOfficeStyleScene ? 0.86 : 1.18;
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -918,9 +923,9 @@
       const renderFrame = () => {
         if (!document.body.contains(container) || !container.contains(renderer.domElement)) return;
         frames += 1;
-        object.rotation.y = mode === "office" ? 0 : -0.66 + Math.sin(frames * 0.004) * 0.025;
-        if (mode === "office") {
-          camera.lookAt(0.08, 0.5, 0.02);
+        object.rotation.y = useOfficeStyleScene ? 0 : -0.66 + Math.sin(frames * 0.004) * 0.025;
+        if (useOfficeStyleScene) {
+          camera.lookAt(officeCameraTarget);
         }
         renderer.render(scene, camera);
         requestAnimationFrame(renderFrame);

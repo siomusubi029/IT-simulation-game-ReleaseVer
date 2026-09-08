@@ -73,11 +73,6 @@ function renderLeaderboardList(mode, difficulty, container) {
   `;
 }
 
-function getModeLabel(modeId) {
-  const mode = gameModes.find((m) => m.id === modeId);
-  return mode ? mode.name : modeId;
-}
-
 function renderLeaderboardPanel() {
   const select = document.getElementById("leaderboard-mode-select");
   const diffSelect = document.getElementById("leaderboard-difficulty-select");

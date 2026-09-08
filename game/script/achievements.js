@@ -95,6 +95,31 @@ function saveAchievements() {
   }
 }
 
+function resetAchievements() {
+  const ok = window.confirm("解除済みの実績と累計記録をすべてリセットします。よろしいですか？");
+  if (!ok) return;
+
+  achievementState.unlocked.clear();
+  achievementState.clearedModes.clear();
+  achievementState.totalResolved = 0;
+  try {
+    localStorage.removeItem(ACHIEVEMENTS_STORAGE_KEY);
+  } catch (e) {
+    saveAchievements();
+  }
+  renderAchievementsPanel();
+
+  const resetBtn = document.getElementById("achievements-reset-button");
+  if (resetBtn) {
+    resetBtn.textContent = "リセットしました";
+    resetBtn.disabled = true;
+    setTimeout(() => {
+      resetBtn.textContent = "実績をリセット";
+      resetBtn.disabled = false;
+    }, 1400);
+  }
+}
+
 function unlockAchievement(id) {
   if (achievementState.unlocked.has(id)) return;
   const def = achievementDefs.find((a) => a.id === id);
@@ -190,6 +215,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadAchievements();
   const openBtn = document.getElementById("achievements-open-button");
   const closeBtn = document.getElementById("achievements-modal-close");
+  const resetBtn = document.getElementById("achievements-reset-button");
   if (openBtn) openBtn.addEventListener("click", openAchievementsModal);
   if (closeBtn) closeBtn.addEventListener("click", closeAchievementsModal);
+  if (resetBtn) resetBtn.addEventListener("click", resetAchievements);
 });
