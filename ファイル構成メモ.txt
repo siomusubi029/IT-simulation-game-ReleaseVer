@@ -1,22 +1,23 @@
 office-crisis-readable の主なフォルダ
 
+[紹介サイト]
+index.html
+style.css
+script.js
+
+GitHub Pages のトップURLで開く紹介サイトです。
+ゲームへのリンクは game/game.html を参照します。
+
 [ゲーム本体]
-game/index.html
-game/style.css
+game/game.html
+game/game.css
 game/script/
 game/assets/
 game/models/
 
-ゲームは game/index.html から動きます。
+ゲームは game/game.html から動きます。
+ゲームの主要JSは game/script/game.js です。
 3Dモデルは game/models/ にまとめています。
-
-[紹介サイト]
-site/about.html
-site/about.css
-site/about.js
-
-紹介サイトは site/about.html から動きます。
-ゲームへのリンクは ../game/index.html を参照します。
 
 [Blender元データ]
 blender/sources/
@@ -48,4 +49,4 @@ GLBを書き出す場合は game/models/ に出力されるようにしていま
 [起動]
 start-game.bat
 
-ローカルサーバーを起動し、http://127.0.0.1:8094/game/index.html を開きます。
+ローカルサーバーを起動し、http://127.0.0.1:8094/game/game.html を開きます。

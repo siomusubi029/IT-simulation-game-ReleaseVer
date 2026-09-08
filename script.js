@@ -74,8 +74,8 @@ async function initAboutModelViewer() {
 
   try {
     const [THREE, { GLTFLoader }] = await Promise.all([
-      import('../game/assets/vendor/three/three.module.js?v=160-local'),
-      import('../game/assets/vendor/three/GLTFLoader.js?v=160-local')
+      import('./game/assets/vendor/three/three.module.js?v=160-local'),
+      import('./game/assets/vendor/three/GLTFLoader.js?v=160-local')
     ]);
 
     const scene = new THREE.Scene();
@@ -102,7 +102,7 @@ async function initAboutModelViewer() {
     scene.add(fillLight);
 
     const loader = new GLTFLoader();
-    const gltf = await loader.loadAsync(viewer.dataset.modelSrc || '../game/models/GeneralCompany.glb');
+    const gltf = await loader.loadAsync(viewer.dataset.modelSrc || './game/models/GeneralCompany.glb');
     const model = gltf.scene;
 
     const box = new THREE.Box3().setFromObject(model);

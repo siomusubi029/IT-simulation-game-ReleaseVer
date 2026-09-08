@@ -15,4 +15,4 @@ if %errorlevel%==0 (
 
 start "IT Simulation Server" /min cmd /c "cd /d ""%~dp0"" && %PYTHON_CMD% -m http.server %PORT% --bind 127.0.0.1"
 timeout /t 1 /nobreak >nul
-start "" "http://127.0.0.1:%PORT%/game/index.html"
+start "" "http://127.0.0.1:%PORT%/game/game.html"
